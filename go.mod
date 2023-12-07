@@ -1,6 +1,6 @@
 module github.com/bruce-mig/simple-bank
 
-go 1.21.4
+go 1.21
 
 require (
 	github.com/gin-gonic/gin v1.9.1
@@ -42,6 +42,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/mock v0.3.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
