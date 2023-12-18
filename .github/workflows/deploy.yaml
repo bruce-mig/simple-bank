@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Docker Build, Tag & Publish
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Build, Tag & Publish Image to DockerHub
         uses: dinushchathurya/build-tag-push-action@v1.2.1
         with:
@@ -15,5 +17,5 @@ jobs:
           context: .
           file: Dockerfile
           repoOwner: ${{ secrets.DOCKER_USERNAME }}
-          repository:  simple-bank
+          repository:  simple-bank-api
           tag: latest
