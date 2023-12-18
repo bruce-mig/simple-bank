@@ -1,0 +1,21 @@
+name: Deploy to Docker registry
+
+on: [push]
+
+jobs:
+  docker-build-tag-push:
+    runs-on: ubuntu-latest
+    name: Docker Build, Tag & Publish
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build, Tag & Publish Image to DockerHub
+        uses: dinushchathurya/build-tag-push-action@v1.2.1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          context: .
+          file: Dockerfile
+          repoOwner: ${{ secrets.DOCKER_USERNAME }}
+          repository:  simple-bank-api
+          tag: latest
