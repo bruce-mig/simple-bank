@@ -140,6 +140,76 @@ The service provides APIs for the frontend to do following things:
     make test
     ```
 
+## Deploy to minikube kubernetes cluster
+
+- Start minikube:
+
+    Minikube and kubectl must be installed as prerequisites.
+    Then start minikube
+
+    ```bash
+    minikube start
+    ```
+    To view minikube dashboard, use the command `minikube dashboard` or use k9s with the command `k9s`.
+
+- Pod deployments:
+
+     Use the command `kubectl apply -f <file-name>.yml`
+
+- Running Postgres on the host machine:
+
+    To spin up database on local machine, run the following command
+
+    ```bash
+    docker-compose -f postgres.yml up -d
+    ```
+
+    To connect to database from  minikube, change the host from localhost to `host.minikube.internal` in the deployment.yaml file.
+
+- [Install nginx ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/#minikube):
+
+    Enable ingress add-ons
+    ```bash
+    minikube addons enable ingress
+    minikube addons enable ingress-dns
+    ```
+    Apply ingress
+    ```bash
+    kubectl apply -f ingress-nginx.yml
+    kubectl apply -f ingress-http.yml
+    kubectl apply -f ingress-grpc.yml
+    kubectl get ingress
+    ```
+
+- Configure ingress:
+    
+    Add ingress host to /etc/hosts as follows
+
+    ```bash
+    sudo vi /etc/hosts
+    ```
+    Append to the file `127.0.0.1       simplebank.test`
+
+    Create a minikube tunnel
+
+    ```bash
+    minikube tunnel
+    ```
+
+    The app is now available at `http://simplebank.test` in the browser.
+
+    Test ingress by running 
+    
+    ```bash
+    nslookup simplebank.test
+    ```
+
+- [Install cert-manager](https://cert-manager.io/docs/installation/kubernetes/):
+
+    ```bash
+    kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.0/cert-manager.yaml
+    ```
+
 ## Deploy to kubernetes cluster
 
 - [Install nginx ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/#aws):
@@ -152,4 +222,18 @@ The service provides APIs for the frontend to do following things:
 
     ```bash
     kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.0/cert-manager.yaml
+    ```
+
+### Setup gRPC
+
+- Generate files
+
+    NOTE: You should add the `protoc-gen-go-grpc` to your PATH
+
+    ```bash
+    PATH="${PATH}:${HOME}/go/bin"
+    ```
+
+    ```bash
+    make proto
     ```
