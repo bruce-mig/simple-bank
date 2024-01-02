@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-bank-api-deployment
+  labels:
+    app: simple-bank-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-bank-api
+  template:
+    metadata:
+      labels:
+        app: simple-bank-api
+    spec:
+      containers:
+      - name: simple-bank-api
+        image: bmigeri/simple-bank-api:latest
+        imagePullPolicy: Always
+        env:
+        - name: DB_SOURCE
+          value: "postgresql://root:secret@host.minikube.internal:5432/simple_bank?sslmode=disable"
+        ports:
+        - containerPort: 8080
+          name: http-server
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
