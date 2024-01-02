@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   postgres:
-    image: postgres:14-alpine
+    image: postgres:16-alpine
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=secret
@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - data-volume:/var/lib/postgresql/data
+      - db-vol:/var/lib/postgresql/data
   api:
     build:
       context: .
@@ -29,4 +29,4 @@ services:
       ]
     command: [ "/app/main" ]
 volumes:
-  data-volume:
+  db-vol:
