@@ -21,6 +21,12 @@ migratedown:
 migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
+db_docs:
+	dbdocs build doc/db.dbml
+
+db_schema:
+	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+
 sqlc:
 	sudo /home/migeri/.gvm/pkgsets/go1.21.4/global/bin/sqlc generate
 
@@ -48,4 +54,4 @@ proto:
 
 
 
-.PHONY: createdb dropdb postgres migrateup migratedown sqlc test server mock migrateup1 migratedown1 new_migration proto
+.PHONY: createdb dropdb postgres migrateup migratedown sqlc test server mock migrateup1 migratedown1 new_migration proto db_docs db_schema
