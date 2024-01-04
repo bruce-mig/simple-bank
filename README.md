@@ -98,7 +98,7 @@ The service provides APIs for the frontend to do following things:
     make db_docs
     ```
 
-- Access the DB documentation at [this address](https://dbdocs.io/techschool.guru/simple_bank). Password: `secret`
+- Access the DB documentation at [this address](https://dbdocs.io/bmigeri/simple_bank). Password: `secret`
 
 ### How to generate code
 
