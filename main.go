@@ -13,10 +13,12 @@ import (
 	"github.com/bruce-mig/simple-bank/gapi"
 	"github.com/bruce-mig/simple-bank/pb"
 	"github.com/bruce-mig/simple-bank/util"
+	"github.com/bruce-mig/simple-bank/worker"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/hibiken/asynq"
 	_ "github.com/lib/pq"
 	"github.com/rakyll/statik/fs"
 	"github.com/rs/zerolog"
@@ -45,12 +47,20 @@ func main() {
 	runDBMigration(config.MigrationURL, config.DBSource)
 
 	store := db.NewStore(conn)
-	go runGatewayServer(config, store)
-	runGRPCServer(config, store)
+
+	redisOpt := asynq.RedisClientOpt{
+		Addr: config.RedisAddress,
+	}
+
+	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
+
+	go runTaskProcessor(redisOpt, store)
+	go runGatewayServer(config, store, taskDistributor)
+	runGRPCServer(config, store, taskDistributor)
 }
 
-func runGatewayServer(config util.Config, store db.Store) {
-	server, err := gapi.NewServer(config, store)
+func runGatewayServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
+	server, err := gapi.NewServer(config, store, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create server")
 	}
@@ -99,8 +109,8 @@ func runGatewayServer(config util.Config, store db.Store) {
 	}
 }
 
-func runGRPCServer(config util.Config, store db.Store) {
-	server, err := gapi.NewServer(config, store)
+func runGRPCServer(config util.Config, store db.Store, taskDistributor worker.TaskDistributor) {
+	server, err := gapi.NewServer(config, store, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create server")
 	}
@@ -144,4 +154,13 @@ func runDBMigration(migrationURL string, dbSource string) {
 	}
 
 	log.Info().Msg("db migrated successfully")
+}
+
+func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+	log.Info().Msg("start task processor")
+	err := taskProcessor.Start()
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to start task processor")
+	}
 }
