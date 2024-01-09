@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: simplebank.test
+  - host: "api.simplebank.test"
     http:
       paths:
       - pathType: Prefix
@@ -19,5 +19,5 @@ spec:
               number: 80
   # tls:
   # - hosts:
-  #   - simplebank.test
+  #   - api.simplebank.test
   #   secretName: simple-bank-api-cert

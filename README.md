@@ -156,12 +156,12 @@ The service provides APIs for the frontend to do following things:
 
      Use the command `kubectl apply -f <file-name>.yml`
 
-- Running Postgres on the host machine:
+- Running Postgres and Redis on the host machine:
 
     To spin up database on local machine, run the following command
 
     ```bash
-    docker-compose -f postgres.yml up -d
+    docker-compose -f database.yml up -d
     ```
 
     To connect to database from  minikube, change the host from localhost to `host.minikube.internal` in the deployment.yaml file.
@@ -175,9 +175,9 @@ The service provides APIs for the frontend to do following things:
     ```
     Apply ingress
     ```bash
-    kubectl apply -f ingress-nginx.yml
-    kubectl apply -f ingress-http.yml
-    kubectl apply -f ingress-grpc.yml
+    kubectl apply -f k8s/ingress-nginx.yaml
+    kubectl apply -f k8s/ingress-http.yaml
+    kubectl apply -f k8s/ingress-grpc.yaml
     kubectl get ingress
     ```
 
@@ -188,7 +188,11 @@ The service provides APIs for the frontend to do following things:
     ```bash
     sudo vi /etc/hosts
     ```
-    Append to the file `127.0.0.1       simplebank.test`
+    Append to the file 
+    ```bash
+    127.0.0.1       api.simplebank.test
+    127.0.0.1       gapi.simplebank.test
+    ```
 
     Create a minikube tunnel
 
@@ -196,7 +200,7 @@ The service provides APIs for the frontend to do following things:
     minikube tunnel
     ```
 
-    The app is now available at `http://simplebank.test` in the browser.
+    The app is now available at `http://api.simplebank.test` in the browser.
 
     Test ingress by running 
     
