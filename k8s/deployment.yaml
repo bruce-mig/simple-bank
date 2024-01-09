@@ -21,9 +21,13 @@ spec:
         env:
         - name: DB_SOURCE
           value: "postgresql://root:secret@host.minikube.internal:5432/simple_bank?sslmode=disable"
+        - name: REDIS_ADDRESS
+          value: host.minikube.internal:6379
         ports:
         - containerPort: 8080
           name: http-server
+        - containerPort: 9090
+          name: grpc-server
         resources:
           limits:
             memory: "128Mi"
