@@ -10,7 +10,7 @@ import (
 const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 func init() {
-	rand.Seed(time.Now().UnixNano())
+	rand.NewSource(time.Now().UnixNano())
 }
 
 // RandomInt generates a random integer between min and max
@@ -27,7 +27,6 @@ func RandomString(n int) string {
 		c := alphabet[rand.Intn(k)]
 		sb.WriteByte(c)
 	}
-
 	return sb.String()
 }
 
