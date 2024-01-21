@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"net"
 	"net/http"
 	"os"
@@ -11,6 +10,7 @@ import (
 	db "github.com/bruce-mig/simple-bank/db/sqlc"
 	_ "github.com/bruce-mig/simple-bank/doc/statik"
 	"github.com/bruce-mig/simple-bank/gapi"
+	"github.com/bruce-mig/simple-bank/mail"
 	"github.com/bruce-mig/simple-bank/pb"
 	"github.com/bruce-mig/simple-bank/util"
 	"github.com/bruce-mig/simple-bank/worker"
@@ -19,6 +19,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/hibiken/asynq"
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 	"github.com/rakyll/statik/fs"
 	"github.com/rs/zerolog"
@@ -38,7 +39,7 @@ func main() {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 
-	conn, err := sql.Open(config.DBDriver, config.DBSource)
+	connPool, err := pgxpool.New(context.Background(), config.DBSource)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot connect to db")
 	}
@@ -46,7 +47,7 @@ func main() {
 	//run db migration
 	runDBMigration(config.MigrationURL, config.DBSource)
 
-	store := db.NewStore(conn)
+	store := db.NewStore(connPool)
 
 	redisOpt := asynq.RedisClientOpt{
 		Addr: config.RedisAddress,
@@ -54,7 +55,7 @@ func main() {
 
 	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
 
-	go runTaskProcessor(redisOpt, store)
+	go runTaskProcessor(config, redisOpt, store)
 	go runGatewayServer(config, store, taskDistributor)
 	runGRPCServer(config, store, taskDistributor)
 }
@@ -156,8 +157,9 @@ func runDBMigration(migrationURL string, dbSource string) {
 	log.Info().Msg("db migrated successfully")
 }
 
-func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
+	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
 	log.Info().Msg("start task processor")
 	err := taskProcessor.Start()
 	if err != nil {
