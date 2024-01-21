@@ -29,6 +29,16 @@ func ValidateUsername(value string) error {
 	return nil
 }
 
+func ValidateFullName(value string) error {
+	if err := ValidateString(value, 3, 100); err != nil {
+		return err
+	}
+	if !isValidFullName(value) {
+		return fmt.Errorf("must contain only letters or spaces")
+	}
+	return nil
+}
+
 func ValidatePassword(value string) error {
 	return ValidateString(value, 6, 100)
 }
@@ -43,12 +53,13 @@ func ValidateEmail(value string) error {
 	return nil
 }
 
-func ValidateFullName(value string) error {
-	if err := ValidateString(value, 3, 100); err != nil {
-		return err
-	}
-	if !isValidFullName(value) {
-		return fmt.Errorf("must contain only letters or spaces")
+func ValidateEmailId(value int64) error {
+	if value <= 0 {
+		return fmt.Errorf("must be a positive integer")
 	}
 	return nil
+}
+
+func ValidateSecretCode(value string) error {
+	return ValidateString(value, 32, 128)
 }
