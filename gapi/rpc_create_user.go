@@ -46,15 +46,17 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 				asynq.ProcessIn(10 * time.Second),
 				asynq.Queue(worker.QueueCritical),
 			}
-			return server.taskDistributor.DistrubuteTaskSendVerifyEmail(ctx, taskPayload, opts...)
+
+			return server.taskDistributor.DistributeTaskSendVerifyEmail(ctx, taskPayload, opts...)
 		},
 	}
+
 	txResult, err := server.store.CreateUserTx(ctx, arg)
 	if err != nil {
 		if db.ErrorCode(err) == db.UniqueViolation {
 			return nil, status.Errorf(
 				codes.AlreadyExists,
-				"username already exists: %s", err,
+				err.Error(),
 			)
 
 		}
