@@ -10,7 +10,7 @@ import (
 const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 func init() {
-	rand.NewSource(time.Now().UnixNano())
+	rand.Seed(time.Now().UnixNano())
 }
 
 // RandomInt generates a random integer between min and max
@@ -27,6 +27,7 @@ func RandomString(n int) string {
 		c := alphabet[rand.Intn(k)]
 		sb.WriteByte(c)
 	}
+
 	return sb.String()
 }
 
@@ -42,7 +43,7 @@ func RandomMoney() int64 {
 
 // RandomCurrency generates a random currency code
 func RandomCurrency() string {
-	currencies := []string{ZAR, USD, BWP}
+	currencies := []string{USD, ZAR, BWP}
 	n := len(currencies)
 	return currencies[rand.Intn(n)]
 }
