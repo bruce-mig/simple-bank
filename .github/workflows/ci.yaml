@@ -18,4 +18,4 @@ jobs:
           file: Dockerfile
           repoOwner: ${{ secrets.DOCKER_USERNAME }}
           repository:  simple-bank-api
-          tag: latest, ${{ github.sha }}
+          tag: latest
