@@ -24,7 +24,7 @@ type eqCreateUserParamsMatcher struct {
 	password string
 }
 
-func (e eqCreateUserParamsMatcher) Matches(x interface{}) bool {
+func (e eqCreateUserParamsMatcher) Matches(x any) bool {
 	arg, ok := x.(db.CreateUserParams)
 	if !ok {
 		return false

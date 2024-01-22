@@ -7,7 +7,7 @@ import (
 )
 
 type TaskDistributor interface {
-	DistrubuteTaskSendVerifyEmail(
+	DistributeTaskSendVerifyEmail(
 		ctx context.Context,
 		payload *PayloadSendVerifyEmail,
 		opts ...asynq.Option,
@@ -23,5 +23,4 @@ func NewRedisTaskDistributor(redisOpt asynq.RedisClientOpt) TaskDistributor {
 	return &RedisTaskDistributor{
 		client: client,
 	}
-
 }

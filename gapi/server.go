@@ -10,7 +10,7 @@ import (
 	"github.com/bruce-mig/simple-bank/worker"
 )
 
-// Server serves gRPC requests for out banking service.
+// Server serves gRPC requests for our banking service.
 type Server struct {
 	pb.UnimplementedSimpleBankServer
 	config          util.Config
@@ -25,6 +25,7 @@ func NewServer(config util.Config, store db.Store, taskDistributor worker.TaskDi
 	if err != nil {
 		return nil, fmt.Errorf("cannot create token maker: %w", err)
 	}
+
 	server := &Server{
 		config:          config,
 		store:           store,
