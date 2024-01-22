@@ -31,7 +31,7 @@ sqlc:
 	sudo /home/migeri/.gvm/pkgsets/go1.21.4/global/bin/sqlc generate
 
 test:
-	go test -v -cover ./...
+	go test -v -cover -short ./...
 
 server:
 	go run main.go
