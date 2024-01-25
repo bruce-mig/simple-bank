@@ -20,7 +20,7 @@ func TestSendEmailWithGmail(t *testing.T) {
 	subject := "A test email"
 	content := `
 	<h1>Hello world</h1>
-	<p>This is a test message from Bruce</p>
+	<p>This is a test message from Simple Bank</p>
 	`
 	to := []string{"bmigeri@gmail.com"}
 	attachFiles := []string{"../README.md"}
