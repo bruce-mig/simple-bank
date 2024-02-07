@@ -1,0 +1,46 @@
+type: Namespace
+name: simple-bank-namespace
+labels:
+  name: demo-a
+ingress:
+  name: nginx
+  controller: k8s.io/ingress-nginx
+  redirect: true
+  http: 
+    name: simple-bank-ingress-http
+    host: api.simplebank.test
+    secretName: simple-bank-api-cert
+  grpc:
+    name: simple-bank-ingress-grpc
+    protocol: GRPC
+    host: gapi.simplebank.test
+    secretName: simple-bank-gapi-cert
+deployment:
+  name: simple-bank-api-deployment
+  imageName: bmigeri/simple-bank-api
+  dockerTag: latest
+  pullPolicy: Always
+  replicas: 1
+  httpPort: 8080
+  grpcPort: 9090
+app: simple-bank-api
+dbSource: postgresql://root:secret@host.minikube.internal:5432/simple_bank?sslmode=disable
+redisAddr: host.minikube.internal:6379
+httpName: http-server
+grpcName: grpc-server
+memory: 128Mi
+cpu: 500m
+protocol: TCP
+service:
+  name: simple-bank-api-service
+  type: ClusterIP
+  httpName: http-service
+  grpcName: grpc-service
+httpPort: 80
+grpcPort: 90
+issuer:
+  name: letsencrypt
+  server: https://acme-v02.api.letsencrypt.org/directory
+  secretName: letsencrypt-account-private-key
+email: bmigeri@gmail.com
+

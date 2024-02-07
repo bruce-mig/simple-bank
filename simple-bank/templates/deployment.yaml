@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  {{- $app := .Values.app -}}
+  {{- with .Values.deployment }}
+  name: {{ .name | quote }}
+  labels:
+    app: {{ $app }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ $app }}
+  template:
+    metadata:
+      labels:
+        app: {{ $app }}
+    spec:
+      containers:
+      - name: {{ $app }}
+        
+        image: {{ .imageName }}:{{ .dockerTag }}
+        {{- end }}
+        imagePullPolicy: {{ .Values.pullPolicy | quote }}
+        env:
+        - name: DB_SOURCE
+          valueFrom:
+            configMapKeyRef:
+              name: simplebank-config
+              key: postgres-url
+        - name: REDIS_ADDRESS
+          value: {{ .Values.redisAddr | quote }}
+        ports:
+        - containerPort: {{ .Values.deployment.httpPort }}
+          name: {{ .Values.httpName }}
+        - containerPort: {{ .Values.deployment.grpcPort }}
+          name: {{ .Values.grpcName }}
+        resources:
+          limits:
+            memory: {{ .Values.memory | quote}}
+            cpu: {{ .Values.cpu | quote }}

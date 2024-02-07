@@ -1,0 +1,5 @@
+apiVersion: v2
+name: simple-bank
+version: 0.1.0
+description: A helm chart for simple-bank project k8s deployment
+type: application
