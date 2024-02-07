@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: simplebank-config #name of config map
+data:
+  postgres-url: "postgresql://root:secret@host.minikube.internal:5432/simple_bank?sslmode=disable" 
+ 

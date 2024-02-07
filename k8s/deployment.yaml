@@ -20,7 +20,10 @@ spec:
         imagePullPolicy: Always
         env:
         - name: DB_SOURCE
-          value: "postgresql://root:secret@host.minikube.internal:5432/simple_bank?sslmode=disable"
+          valueFrom:
+            configMapKeyRef:
+              name: simplebank-config
+              key: postgres-url
         - name: REDIS_ADDRESS
           value: host.minikube.internal:6379
         ports:
