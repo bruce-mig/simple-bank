@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  {{- $issuerName := .Values.issuer.name -}}
+  {{- $serviceName := .Values.service.name -}}
+  {{- $grpcPort := .Values.grpcPort -}}
+  {{- with .Values.ingress }}
+  name: {{ .grpc.name }}
+  annotations:
+    # cert-manager.io/cluster-issuer: {{ $issuerName }}
+    # nginx.ingress.kubernetes.io/ssl-redirect: {{ .redirect | quote}}
+    nginx.ingress.kubernetes.io/backend-protocol: {{ .grpc.protocol | quote }}
+spec:
+  ingressClassName: {{ .name }}
+  rules:
+  - host: {{ .grpc.host | quote }}
+  
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: {{ $grpcPort }}
+  # tls:
+  # - hosts:
+  #   - {{ .grpc.host | quote }}
+  #   secretName: {{ .grpc.secretName }}
+{{- end }}

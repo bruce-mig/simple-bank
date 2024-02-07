@@ -1,0 +1,7 @@
+kind: {{ .Values.type }}
+apiVersion: v1
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    name: {{ .Values.labels.name }}
+    {{- template "simplebank.v1.labels" }}
