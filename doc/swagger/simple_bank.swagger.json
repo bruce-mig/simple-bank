@@ -22,7 +22,7 @@
   ],
   "paths": {
     "/v1/accounts": {
-      "get": {
+      "post": {
         "summary": "Create a bank account",
         "description": "Use this API to create a bank account for an authenticated user",
         "operationId": "SimpleBank_CreateAccount",
@@ -42,16 +42,12 @@
         },
         "parameters": [
           {
-            "name": "currency",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateAccountRequest"
+            }
           }
         ],
         "tags": [
@@ -128,7 +124,7 @@
       }
     },
     "/v1/tokens/renew_access": {
-      "get": {
+      "post": {
         "summary": "Renew access token",
         "description": "Use this API to renew a user's access token",
         "operationId": "SimpleBank_RenewAccessToken",
@@ -148,10 +144,12 @@
         },
         "parameters": [
           {
-            "name": "refreshToken",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbRenewAccessTokenRequest"
+            }
           }
         ],
         "tags": [
@@ -257,6 +255,17 @@
         }
       }
     },
+    "pbCreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
     "pbCreateAccountResponse": {
       "type": "object",
       "properties": {
@@ -323,6 +332,14 @@
         "refreshTokenExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbRenewAccessTokenRequest": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string"
         }
       }
     },
