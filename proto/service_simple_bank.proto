@@ -7,6 +7,7 @@ import "rpc_create_user.proto";
 import "rpc_update_user.proto";
 import "rpc_login_user.proto";
 import "rpc_verify_email.proto";
+import "rpc_renew_access_token.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/bruce-mig/simple-bank/pb";
@@ -62,6 +63,15 @@ service SimpleBank{
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to verify user's email address";
             summary: "Verify email";
+        };
+    }
+    rpc RenewAccessToken (RenewAccessTokenRequest) returns (RenewAccessTokenResponse) {
+        option (google.api.http) = {
+            get: "/v1/tokens/renew_access"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to renew a user's access token";
+            summary: "Renew access token";
         };
     }
 }
