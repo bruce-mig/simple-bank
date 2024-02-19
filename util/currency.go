@@ -7,8 +7,8 @@ const (
 	BWP = "BWP"
 )
 
-// IsSupportedCurency returns true if the currency is supported
-func IsSupportedCurency(currency string) bool {
+// IsSupportedCurrency returns true if the currency is supported
+func IsSupportedCurrency(currency string) bool {
 	switch currency {
 	case USD, ZAR, BWP:
 		return true
