@@ -14,6 +14,7 @@ const (
 	authorizationBearer = "bearer"
 )
 
+// gRPC authentication middleware
 func (server *Server) authorizeUser(ctx context.Context, accessibleRoles []string) (*token.Payload, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
