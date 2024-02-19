@@ -16,6 +16,7 @@ const (
 	authorizationPayloadKey = "authorization_payload"
 )
 
+// HTTP authentication  middleware.
 func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authorizationHeader := ctx.GetHeader(authorizationHeaderKey)
