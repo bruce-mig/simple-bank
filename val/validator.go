@@ -72,3 +72,10 @@ func ValidateCurrency(currency string) error {
 	}
 	return nil
 }
+
+func ValidateAccountID(value int64) error {
+	if value <= 0 {
+		return fmt.Errorf("must be a positive integer")
+	}
+	return nil
+}
