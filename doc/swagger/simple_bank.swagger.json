@@ -22,6 +22,44 @@
   ],
   "paths": {
     "/v1/accounts": {
+      "get": {
+        "summary": "List all of user's accounts",
+        "description": "Use this API to list all accounts belonging to a user",
+        "operationId": "SimpleBank_ListAccounts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbListAccountsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      },
       "post": {
         "summary": "Create a bank account",
         "description": "Use this API to create a bank account for an authenticated user",
@@ -337,6 +375,18 @@
       "properties": {
         "account": {
           "$ref": "#/definitions/pbAccount"
+        }
+      }
+    },
+    "pbListAccountsResponse": {
+      "type": "object",
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbAccount"
+          }
         }
       }
     },
