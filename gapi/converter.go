@@ -25,3 +25,12 @@ func convertAccount(account db.Account) *pb.Account {
 		CreatedAt: timestamppb.New(account.CreatedAt),
 	}
 }
+
+func convertAccounts(accounts []db.Account) []*pb.Account {
+	var accArr []*pb.Account
+	for _, acc := range accounts {
+		accArr = append(accArr, convertAccount(acc))
+	}
+
+	return accArr
+}
