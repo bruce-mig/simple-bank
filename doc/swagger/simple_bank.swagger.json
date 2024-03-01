@@ -124,6 +124,88 @@
         "tags": [
           "SimpleBank"
         ]
+      },
+      "delete": {
+        "summary": "Delete an account",
+        "description": "Use this API to delete an account",
+        "operationId": "SimpleBank_DeleteAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      },
+      "patch": {
+        "summary": "Update account balance",
+        "description": "Use this API to update account balance",
+        "operationId": "SimpleBank_UpdateAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
       }
     },
     "/v1/create_user": {
@@ -370,6 +452,14 @@
         }
       }
     },
+    "pbDeleteAccountResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      }
+    },
     "pbGetAccountResponse": {
       "type": "object",
       "properties": {
@@ -443,6 +533,14 @@
         "accessTokenExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbUpdateAccountResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/pbAccount"
         }
       }
     },
