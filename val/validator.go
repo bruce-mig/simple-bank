@@ -97,3 +97,10 @@ func ValidatePageSize(value int32) error {
 	}
 	return nil
 }
+
+func ValidateAmount(value int64) error {
+	if value < -10000 || value > 10000 {
+		return fmt.Errorf("exceeded limit")
+	}
+	return nil
+}
