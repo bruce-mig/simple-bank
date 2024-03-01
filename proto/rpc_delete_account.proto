@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/bruce-mig/simple-bank/pb";
+
+message DeleteAccountRequest {
+    int64 id = 1;
+    string owner = 2;
+}
+
+message DeleteAccountResponse{
+    string response = 1;
+}
