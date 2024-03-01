@@ -11,6 +11,8 @@ import "rpc_renew_access_token.proto";
 import "rpc_create_account.proto";
 import "rpc_get_account.proto";
 import "rpc_list_accounts.proto";
+import "rpc_update_account.proto";
+import "rpc_delete_account.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/bruce-mig/simple-bank/pb";
@@ -104,6 +106,25 @@ service SimpleBank{
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to list all accounts belonging to a user";
             summary: "List all of user's accounts";
+        };
+    }
+    rpc UpdateAccount (UpdateAccountRequest) returns (UpdateAccountResponse) {
+        option (google.api.http) = {
+            patch: "/v1/accounts/{id}"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to update account balance";
+            summary: "Update account balance";
+        };
+    }
+    rpc DeleteAccount (DeleteAccountRequest) returns (DeleteAccountResponse) {
+        option (google.api.http) = {
+            delete: "/v1/accounts/{id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to delete an account";
+            summary: "Delete an account";
         };
     }
 }
