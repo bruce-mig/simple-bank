@@ -111,3 +111,10 @@ func ValidateTransferAmount(value int64) error {
 	}
 	return nil
 }
+
+func ValidateTransferID(value int64) error {
+	if value <= 0 {
+		return fmt.Errorf("must be a positive integer")
+	}
+	return nil
+}
