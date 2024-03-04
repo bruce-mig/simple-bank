@@ -34,3 +34,32 @@ func convertAccounts(accounts []db.Account) []*pb.Account {
 
 	return accArr
 }
+
+func convertTransfer(transfer db.Transfer) *pb.Transfer {
+	return &pb.Transfer{
+		Id:            transfer.ID,
+		FromAccountId: transfer.FromAccountID,
+		ToAccountId:   transfer.ToAccountID,
+		Amount:        transfer.Amount,
+		CreatedAt:     timestamppb.New(transfer.CreatedAt),
+	}
+}
+
+func convertEntry(entry db.Entry) *pb.Entry {
+	return &pb.Entry{
+		Id:        entry.ID,
+		AccountId: entry.AccountID,
+		Amount:    entry.Amount,
+		CreatedAt: timestamppb.New(entry.CreatedAt),
+	}
+}
+
+func convertTranferTxResponse(result db.TransferTxResult) *pb.CreateTransferResponse {
+	return &pb.CreateTransferResponse{
+		Transfer:    convertTransfer(result.Transfer),
+		FromAccount: convertAccount(result.FromAccount),
+		ToAccount:   convertAccount(result.ToAccount),
+		FromEntry:   convertEntry(result.FromEntry),
+		ToEntry:     convertEntry(result.ToEntry),
+	}
+}

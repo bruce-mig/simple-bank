@@ -104,3 +104,10 @@ func ValidateAmount(value int64) error {
 	}
 	return nil
 }
+
+func ValidateTransferAmount(value int64) error {
+	if value < 0 {
+		return fmt.Errorf("amount must be greater than 0")
+	}
+	return nil
+}
