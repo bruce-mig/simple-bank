@@ -344,6 +344,39 @@
         ]
       }
     },
+    "/v1/transfers/{id}": {
+      "get": {
+        "summary": "Retrieve a single transfer by id",
+        "description": "Use this API to get a single transfer by transfer id",
+        "operationId": "SimpleBank_GetTransfer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetTransferResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      }
+    },
     "/v1/update_user": {
       "patch": {
         "summary": "Update an existing user",
@@ -560,6 +593,14 @@
       "properties": {
         "account": {
           "$ref": "#/definitions/pbAccount"
+        }
+      }
+    },
+    "pbGetTransferResponse": {
+      "type": "object",
+      "properties": {
+        "transfer": {
+          "$ref": "#/definitions/pbTransfer"
         }
       }
     },
