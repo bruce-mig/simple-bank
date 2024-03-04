@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/bruce-mig/simple-bank/pb";
+
+import "transfer.proto";
+
+message GetTransferRequest {
+    int64 id = 1;
+}
+
+message GetTransferResponse {
+    Transfer transfer = 1;
+}

@@ -14,6 +14,7 @@ import "rpc_list_accounts.proto";
 import "rpc_update_account.proto";
 import "rpc_delete_account.proto";
 import "rpc_create_transfer.proto";
+import "rpc_get_transfer.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/bruce-mig/simple-bank/pb";
@@ -136,6 +137,15 @@ service SimpleBank{
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             description: "Use this API to create a transfer";
             summary: "Transfer an amount";
+        };
+    }
+    rpc GetTransfer (GetTransferRequest) returns (GetTransferResponse) {
+        option (google.api.http) = {
+            get: "/v1/transfers/{id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Use this API to get a single transfer by transfer id";
+            summary: "Retrieve a single transfer by id";
         };
     }
 }
